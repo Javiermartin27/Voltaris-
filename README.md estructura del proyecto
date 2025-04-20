@@ -1,0 +1,14 @@
+# Voltaris-
+Proyecto completo de casino web 3D: Voltaris
+Voltaris/
+├── index.html
+├── js/
+│   ├── main.js
+│   └── juegos.js
+├── css/
+│   └── estilos.css
+├── juegos/
+│   ├── ruleta.html
+│   ├── tragamonedas.html
+│   └── blackjack.html
+├── README.md
