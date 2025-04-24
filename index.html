@@ -1,41 +1,59 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voltaris</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="assets/logo.png" type="image/png">
-  <script defer src="main.js"></script>
+  <title>Zeus Casino - Lobby</title>
+  <style>
+    body { background: #000; color: #fff; font-family: Arial; text-align: center; padding: 40px; }
+    h1 { color: gold; font-size: 2.5em; margin-bottom: 30px; }
+    .menu { display: grid; gap: 20px; max-width: 400px; margin: auto; }
+    a.btn { display: block; padding: 15px; font-size: 1.2em; background: #222; border: 2px solid gold; color: white; text-decoration: none; border-radius: 10px; }
+    a.btn:hover { background: gold; color: black; }
+    .saldo { margin-top: 30px; font-size: 1.3em; color: #0f0; }
+    .cargar { margin-top: 20px; background: #0ff; color: #000; font-weight: bold; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+  </style>
 </head>
 <body>
-  <header>
-    <img src="assets/logo.png" alt="Voltaris Logo" class="logo">
-    <h1>Voltaris - Casino Virtual</h1>
-  </header>  <section class="auth">
-    <h2>Bienvenido</h2>
-    <form id="loginForm">
-      <input type="text" id="username" placeholder="Usuario" required>
-      <input type="password" id="password" placeholder="Contraseña" required>
-      <button type="submit">Iniciar sesión</button>
-    </form>
-    <p>¿No tenés cuenta? <a href="#" onclick="mostrarRegistro()">Registrate</a></p>
-    <form id="registerForm" class="oculto">
-      <input type="text" id="newUsername" placeholder="Nuevo usuario" required>
-      <input type="password" id="newPassword" placeholder="Contraseña" required>
-      <button type="submit">Registrarse</button>
-    </form>
-  </section>  <main id="juegos" class="oculto">
-    <h2>Juegos Disponibles</h2>
-    <div class="juego" onclick="cargarJuego('tragamonedas')">Tragamonedas</div>
-    <div class="juego" onclick="cargarJuego('gusanito')">Gusanito</div>
-    <div class="juego" onclick="cargarJuego('ruleta')">Ruleta</div>
-    <div class="juego" onclick="cargarJuego('casino')">Casino en Vivo</div>
-    <div class="juego" onclick="cargarJuego('slots3d')">Slots 3D</div>
-  </main>  <section class="pago">
-    <h3>Recargar saldo</h3>
-    <a href="https://www.mercadopago.com.ar/link-de-tu-cuenta" target="_blank" class="boton">Pagar con Mercado Pago</a>
-  </section>  <footer>
-    <p>Voltaris &copy; 2025 - Todos los derechos reservados</p>
-  </footer>
+  <h1>ZEUS CASINO</h1>
+
+  <div class="menu">
+    <a class="btn" href="zeus_rayos.html">⚡ Rayos de Zeus</a>
+    <a class="btn" href="zeus_tragamonedas.html">🎰 Tragamonedas de Zeus</a>
+    <a class="btn" href="zeus_ruleta.html">🎯 Ruleta Mística</a>
+    <a class="btn" href="zeus_combate.html">⚔️ Combate de Dioses</a>
+  </div>
+
+  <div class="saldo">
+    Saldo actual: $<span id="saldo">0</span>
+  </div>
+
+  <button class="cargar" onclick="cargar()">Cargar Saldo</button>
+  <button class="cargar" onclick="verificarRetiro()">Solicitar Retiro</button>
+
+  <script>
+    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
+    document.getElementById("saldo").textContent = saldo;
+
+    function cargar() {
+      const monto = prompt("¿Cuánto querés cargar?");
+      if (monto && !isNaN(monto)) {
+        saldo += parseInt(monto);
+        localStorage.setItem("voltarisSaldo", saldo);
+        localStorage.setItem("cargaTotal", monto);
+        localStorage.setItem("gananciaUsuario", 0);
+        document.getElementById("saldo").textContent = saldo;
+        alert("Saldo cargado. Redirigiendo al pago...");
+        window.open("https://biolibre.ar/urbanax?ref=zeuscasino", "_blank");
+      }
+    }
+
+    function verificarRetiro() {
+      if (saldo >= 10000) {
+        alert("Podés retirar. Contactá al Cajero AI con tu ID de juego.");
+      } else {
+        alert("Necesitás al menos $10.000 para solicitar retiro.");
+      }
+    }
+  </script>
 </body>
 </html>
