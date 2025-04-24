@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Zeus Tragamonedas</title>
+  <title>Tragamonedas de Zeus</title>
   <style>
-    body { background: #000; color: #fff; font-family: Arial; text-align: center; padding: 40px; }
+    body { background: #000; color: white; font-family: Arial; text-align: center; padding: 40px; }
     .slot-container { display: flex; justify-content: center; gap: 20px; margin: 30px; font-size: 3em; }
     button { padding: 10px 25px; font-size: 1.2em; background: gold; border: none; border-radius: 10px; cursor: pointer; }
     #result { margin-top: 20px; font-size: 1.3em; color: #0f0; }
@@ -18,20 +18,28 @@
   <p>Saldo: $<span id="saldo">0</span></p>
 
   <script>
-    const simbolos = ['⚡', '🛡️', '⚔️', '👑', '🐍']; // rayo, escudo, espada, corona, medusa
+    const simbolos = ['⚡', '🛡️', '⚔️', '👑', '🐍'];
     const saldoEl = document.getElementById("saldo");
     let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
+    let carga = parseInt(localStorage.getItem("cargaTotal") || 10000);
+    let limite = carga * 0.3;
+    let gananciaUsuario = parseInt(localStorage.getItem("gananciaUsuario") || 0);
     saldoEl.textContent = saldo;
 
     function girar() {
       if (saldo < 300) return alert("Saldo insuficiente");
+
+      let gana = gananciaUsuario < limite ? Math.random() < 0.2 : Math.random() < 0.05;
+
       const a = simbolos[Math.floor(Math.random() * simbolos.length)];
       const b = simbolos[Math.floor(Math.random() * simbolos.length)];
       const c = simbolos[Math.floor(Math.random() * simbolos.length)];
       document.getElementById("slots").textContent = `${a} ${b} ${c}`;
 
-      if (a === b && b === c) {
+      if (gana && a === b && b === c) {
         saldo += 2000;
+        gananciaUsuario += 2000;
+        localStorage.setItem("gananciaUsuario", gananciaUsuario);
         document.getElementById("result").textContent = "¡Victoria divina! Ganaste $2000";
       } else {
         saldo -= 300;
