@@ -1,16 +1,23 @@
-const user = localStorage.getItem("voltarisUser") || "UsuarioAnon";
-const balance = localStorage.getItem("voltarisSaldo") || 5000;
-document.getElementById("username").textContent = user;
-document.getElementById("saldo").textContent = balance;
-
-const userId = localStorage.getItem("voltarisUserID") || crypto.randomUUID();
-localStorage.setItem("voltarisUserID", userId);
-document.getElementById("link-pago").href = `https://biolibre.ar/urbanax?ref=voltaris_${userId}`;
-
-// --- GANANCIA OCULTA ---
-(function calcularGananciaOculta() {
-  const monto = 10000; // Simulado
-  const plataforma = monto * 0.7;
-  const usuario = monto * 0.3;
-  localStorage.setItem("gananciaPlataforma", plataforma.toFixed(2));
-})();
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Privado Voltaris</title>
+  <style>
+    body { font-family: Arial; background: #111; color: #0f0; text-align: center; padding: 40px; }
+    .box { background: #222; padding: 20px; border-radius: 10px; display: inline-block; }
+    h1 { color: #FFD700; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Panel Privado - Voltaris</h1>
+    <p>Ganancia simulada de la plataforma:</p>
+    <h2>$<span id="ganancia">0</span></h2>
+  </div>
+  <script>
+    const ganancia = localStorage.getItem("gananciaPlataforma") || "0.00";
+    document.getElementById("ganancia").textContent = ganancia;
+  </script>
+</body>
+</html>
