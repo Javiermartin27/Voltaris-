@@ -1,1 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Blackjack de Zeus</title>
+  <style>
+    body { background: #111; color: white; font-family: Arial; text-align: center; padding: 40px; }
+    .btn { padding: 10px 20px; font-size: 1em; margin: 10px; border: none; border-radius: 8px; cursor: pointer; }
+    .pedir { background: #0f0; color: #000; }
+    .plantarse { background: #ff0; color: #000; }
+    #resultado { margin-top: 20px; font-size: 1.3em; color: #0ff; }
+  </style>
+</head>
+<body>
+  <h1>Blackjack de Zeus</h1>
+  <p>Tu total: <span id="jugador">0</span></p>
+  <p>Casa: <span id="casa">?</span></p>
+  <button class="btn pedir" onclick="pedirCarta()">Pedir</button>
+  <button class="btn plantarse" onclick="plantarse()">Plantarse</button>
+  <div id="resultado"></div>
+  <p>Saldo: $<span id="saldo">0</span></p>
 
+  <script>
+    let jugador = 0;
+    let casa = 0;
+    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
+    let carga = parseInt(localStorage.getItem("cargaTotal") || 10000);
+    let limite = carga * 0.3;
+    let gananciaUsuario = parseInt(localStorage.getItem("gananciaUsuario") || 0);
+
+    const jugadorEl = document.getElementById("jugador");
+    const casaEl = document.getElementById("casa");
+    const resultado = document.getElementById("resultado");
+    const saldoEl = document.getElementById("saldo");
+
+    saldoEl.textContent = saldo;
+
+    function pedirCarta() {
+      const carta = Math.floor(Math.random() * 11) + 1;
+      jugador += carta;
+      jugadorEl.textContent = jugador;
+
+      if (jugador > 21) {
+        saldo -= 500;
+        localStorage.setItem("voltarisSaldo", saldo);
+        resultado.textContent = "¡Te pasaste! Perdiste $500";
+        saldoEl.textContent = saldo;
+        reiniciar();
+      }
+    }
+
+    function plantarse() {
+      casa = Math.floor(Math.random() * 5 + 17); // casa entre 17 y 21
+      casaEl.textContent = casa;
+
+      let gana = false;
+      if (jugador <= 21 && (jugador > casa || casa > 21)) {
+        if (gananciaUsuario < limite) {
+          gana = true;
+        } else {
+          gana = Math.random() < 0.05; // IA: menor chance
+        }
+      }
+
+      if (gana) {
+        saldo += 1000;
+        gananciaUsuario += 1000;
+        resultado.textContent = "¡Ganaste! +$1000";
+      } else {
+        saldo -= 500;
+        resultado.textContent = "Perdiste. -$500";
+      }
+
+      localStorage.setItem("voltarisSaldo", saldo);
+      localStorage.setItem("gananciaUsuario", gananciaUsuario);
+      saldoEl.textContent = saldo;
+      reiniciar();
+    }
+
+    function reiniciar() {
+      setTimeout(() => location.reload(), 3000);
+    }
+  </script>
+</body>
+</html>
