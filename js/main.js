@@ -14,3 +14,8 @@ document.getElementById("link-pago").href = `https://biolibre.ar/urbanax?ref=vol
   const usuario = monto * 0.3;
   localStorage.setItem("gananciaPlataforma", plataforma.toFixed(2));
 })();
+let carga = parseInt(localStorage.getItem("cargaTotal") || 10000);
+let limite = carga * 0.3;
+let gananciaUsuario = parseInt(localStorage.getItem("gananciaUsuario") || 0);
+
+// Control IA: si excede su 30%, baja la probabilidad de victoria
