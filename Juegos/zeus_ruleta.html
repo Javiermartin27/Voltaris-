@@ -9,11 +9,12 @@
     .btn1 { background: #0ff; color: black; }
     .btn2 { background: gold; color: black; }
     .btn3 { background: crimson; color: white; }
+    #resultado { font-size: 1.3em; margin-top: 20px; }
   </style>
 </head>
 <body>
   <h1>Ruleta Mística de Zeus</h1>
-  <p>Elige un símbolo para apostar:</p>
+  <p>Elegí un símbolo para apostar:</p>
   <button class="btn1" onclick="apostar('⚡')">Relámpago ⚡</button>
   <button class="btn2" onclick="apostar('⚔️')">Espada ⚔️</button>
   <button class="btn3" onclick="apostar('🛡️')">Escudo 🛡️</button>
@@ -23,14 +24,22 @@
   <script>
     const opciones = ['⚡', '⚔️', '🛡️'];
     let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
+    let carga = parseInt(localStorage.getItem("cargaTotal") || 10000);
+    let limite = carga * 0.3;
+    let gananciaUsuario = parseInt(localStorage.getItem("gananciaUsuario") || 0);
     document.getElementById("saldo").textContent = saldo;
 
     function apostar(eleccion) {
       if (saldo < 250) return alert("Saldo insuficiente");
-      const resultado = opciones[Math.floor(Math.random() * opciones.length)];
 
-      if (eleccion === resultado) {
+      let resultado = opciones[Math.floor(Math.random() * opciones.length)];
+      let gana = resultado === eleccion;
+      let permitido = gananciaUsuario < limite;
+
+      if (gana && permitido) {
         saldo += 1000;
+        gananciaUsuario += 1000;
+        localStorage.setItem("gananciaUsuario", gananciaUsuario);
         document.getElementById("resultado").textContent = `¡Salió ${resultado}! Ganaste $1000`;
       } else {
         saldo -= 250;
