@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crash - Voltaris</title>
+  <style>
+    body { background: #111; color: white; font-family: Arial; text-align: center; padding: 40px; }
+    .btn { padding: 10px 20px; font-size: 1.1em; margin: 10px; border: none; border-radius: 10px; cursor: pointer; }
+    .start { background: #0f0; color: #000; }
+    .retirar { background: #f90; color: #000; }
+    .boom { color: red; font-size: 2em; }
+  </style>
+</head>
+<body>
+  <h1>Crash</h1>
+  <p>Multiplicador: <span id="multiplicador">1.00</span>x</p>
+  <p>Saldo: $<span id="saldo">0</span></p>
+  <input type="number" id="apuesta" placeholder="Monto a apostar" />
+  <br>
+  <button class="btn start" onclick="iniciar()">Iniciar</button>
+  <button class="btn retirar" onclick="retirar()">Retirar</button>
+  <p id="resultado"></p>
 
+  <script>
+    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
+    let mult = 1.00;
+    let jugando = false;
+    let intervalo;
+    let explotado = false;
+    let monto = 0;
+
+    document.getElementById("saldo").textContent = saldo;
+
+    function iniciar() {
+      if (jugando) return;
+      monto = parseInt(document.getElementById("apuesta").value);
+      if (!monto || monto <= 0 || monto > saldo) {
+        alert("Monto inválido o saldo insuficiente.");
+        return;
+      }
+      mult = 1.00;
+      explotado = false;
+      jugando = true;
+      document.getElementById("resultado").textContent = "";
+      intervalo = setInterval(() => {
+        mult += 0.05 + Math.random() * 0.1;
+        document.getElementById("multiplicador").textContent = mult.toFixed(2);
+        if (Math.random() < 0.01 + mult / 100) { // riesgo creciente
+          explotar();
+        }
+      }, 100);
+    }
+
+    function explotar() {
+      clearInterval(intervalo);
+      jugando = false;
+      explotado = true;
+      saldo -= monto;
+      localStorage.setItem("voltarisSaldo", saldo);
+      document.getElementById("saldo").textContent = saldo;
+      document.getElementById("resultado").innerHTML = '<span class="boom">¡Boom! Perdiste $' + monto + '</span>';
+    }
+
+    function retirar() {
+      if (!jugando || explotado) return;
+      clearInterval(intervalo);
+      jugando = false;
+      const ganancia = Math.floor(monto * mult);
+      saldo += ganancia;
+      localStorage.setItem("voltarisSaldo", saldo);
+      document.getElementById("saldo").textContent = saldo;
+      document.getElementById("resultado").textContent = `¡Retiraste a ${mult.toFixed(2)}x! Ganaste $${ganancia}`;
+    }
+  </script>
+</body>
+</html>
