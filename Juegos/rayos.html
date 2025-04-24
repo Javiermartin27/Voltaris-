@@ -1,1 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Rayos de Zeus</title>
+  <style>
+    body { background: #000; color: white; text-align: center; padding: 40px; font-family: Arial; }
+    button { padding: 15px 30px; background: gold; font-size: 1.2em; border: none; border-radius: 10px; cursor: pointer; }
+    .rayo { font-size: 4em; color: #0ff; margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <h1>Invocá los Rayos de Zeus</h1>
+  <div class="rayo">⚡</div>
+  <button onclick="invocar()">Invocar Rayo ($200)</button>
+  <p id="resultado"></p>
+  <p>Saldo: $<span id="saldo">0</span></p>
 
+  <script>
+    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
+    document.getElementById("saldo").textContent = saldo;
+
+    function invocar() {
+      if (saldo < 200) return alert("Saldo insuficiente");
+      const suerte = Math.random();
+      if (suerte > 0.8) {
+        saldo += 1500;
+        document.getElementById("resultado").textContent = "¡Impacto de rayo! Ganaste $1500";
+      } else {
+        saldo -= 200;
+        document.getElementById("resultado").textContent = "¡Fallaste! Perdés $200";
+      }
+      localStorage.setItem("voltarisSaldo", saldo);
+      document.getElementById("saldo").textContent = saldo;
+    }
+  </script>
+</body>
+</html>
