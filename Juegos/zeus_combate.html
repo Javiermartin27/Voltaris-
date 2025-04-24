@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Combate de Dioses</title>
+  <style>
+    body { background: #000; color: #fff; font-family: Arial; text-align: center; padding: 40px; }
+    .vs { font-size: 4em; margin: 20px; }
+    .ganar { color: lime; font-weight: bold; }
+    .perder { color: red; font-weight: bold; }
+    button { padding: 15px 30px; font-size: 1.2em; background: gold; border: none; border-radius: 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Combate de Dioses</h1>
+  <div class="vs">⚡ ZEUS ⚡ vs 🔥 ENEMIGO 🔥</div>
+  <button onclick="luchar()">Luchar ($600)</button>
+  <p id="resultado"></p>
+  <p>Saldo: $<span id="saldo">0</span></p>
 
+  <script>
+    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
+    document.getElementById("saldo").textContent = saldo;
+
+    function luchar() {
+      if (saldo < 600) return alert("Saldo insuficiente");
+      const ganador = Math.random();
+      if (ganador > 0.5) {
+        saldo += 1200;
+        document.getElementById("resultado").innerHTML = '<span class="ganar">¡Zeus ganó! +$1200</span>';
+      } else {
+        saldo -= 600;
+        document.getElementById("resultado").innerHTML = '<span class="perder">Zeus fue derrotado. -$600</span>';
+      }
+      localStorage.setItem("voltarisSaldo", saldo);
+      document.getElementById("saldo").textContent = saldo;
+    }
+  </script>
+</body>
+</html>
