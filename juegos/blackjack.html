@@ -1,6 +1,74 @@
-
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>Blackjack</title></head>
-<body><h2>Juego de Blackjack</h2><script src="../js/juegos.js"></script></body>
+<head>
+  <meta charset="UTF-8">
+  <title>Blackjack - Voltaris</title>
+  <style>
+    body { font-family: Arial; background: #111; color: white; text-align: center; padding: 40px; }
+    .btn { padding: 10px 20px; font-size: 1em; margin: 10px; border: none; border-radius: 8px; cursor: pointer; }
+    .pedir { background: #0f0; color: #000; }
+    .plantarse { background: #ff0; color: #000; }
+    #resultado { margin-top: 20px; font-size: 1.3em; color: #0ff; }
+  </style>
+</head>
+<body>
+  <h1>Blackjack</h1>
+  <p>Tu total: <span id="jugador">0</span></p>
+  <p>Casa: <span id="casa">?</span></p>
+  <button class="btn pedir" onclick="pedirCarta()">Pedir</button>
+  <button class="btn plantarse" onclick="plantarse()">Plantarse</button>
+  <div id="resultado"></div>
+  <p>Saldo: $<span id="saldo">0</span></p>
+
+  <script>
+    let jugador = 0;
+    let casa = 0;
+    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
+
+    const jugadorEl = document.getElementById("jugador");
+    const casaEl = document.getElementById("casa");
+    const resultado = document.getElementById("resultado");
+    const saldoEl = document.getElementById("saldo");
+
+    saldoEl.textContent = saldo;
+
+    function pedirCarta() {
+      const carta = Math.floor(Math.random() * 11) + 1;
+      jugador += carta;
+      jugadorEl.textContent = jugador;
+
+      if (jugador > 21) {
+        resultado.textContent = "¡Te pasaste! Perdiste $500";
+        saldo -= 500;
+        actualizarSaldo();
+        reiniciar();
+      }
+    }
+
+    function plantarse() {
+      casa = Math.floor(Math.random() * 8) + 17;
+      casaEl.textContent = casa;
+
+      if ((jugador <= 21 && jugador > casa) || casa > 21) {
+        resultado.textContent = "¡Ganaste! +$1000";
+        saldo += 1000;
+      } else {
+        resultado.textContent = "Perdiste. -$500";
+        saldo -= 500;
+      }
+
+      actualizarSaldo();
+      reiniciar();
+    }
+
+    function actualizarSaldo() {
+      localStorage.setItem("voltarisSaldo", saldo);
+      saldoEl.textContent = saldo;
+    }
+
+    function reiniciar() {
+      setTimeout(() => location.reload(), 3000);
+    }
+  </script>
+</body>
 </html>
