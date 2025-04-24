@@ -1,6 +1,45 @@
-
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>Ruleta</title></head>
-<body><h2>Juego de Ruleta</h2><script src="../js/juegos.js"></script></body>
+<head>
+  <meta charset="UTF-8">
+  <title>Ruleta - Voltaris</title>
+  <style>
+    body { background: #111; color: white; font-family: Arial; text-align: center; padding: 40px; }
+    button { margin: 10px; padding: 10px 20px; font-size: 1.1em; border: none; border-radius: 10px; cursor: pointer; }
+    .rojo { background: red; color: white; }
+    .negro { background: black; color: white; }
+    .result { margin-top: 20px; font-size: 1.3em; }
+  </style>
+</head>
+<body>
+  <h1>Ruleta</h1>
+  <p>Elegí un color:</p>
+  <button class="rojo" onclick="apostar('rojo')">Rojo</button>
+  <button class="negro" onclick="apostar('negro')">Negro</button>
+  <div class="result" id="resultado"></div>
+  <p>Saldo: $<span id="saldo">0</span></p>
+
+  <script>
+    const colores = ["rojo", "negro"];
+    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
+    const resultado = document.getElementById("resultado");
+    const saldoElement = document.getElementById("saldo");
+    saldoElement.textContent = saldo;
+
+    function apostar(eleccion) {
+      const giro = colores[Math.floor(Math.random() * colores.length)];
+
+      if (giro === eleccion) {
+        saldo += 500;
+        resultado.textContent = `¡Ganaste! Salió ${giro}. +$500`;
+      } else {
+        saldo -= 250;
+        resultado.textContent = `Perdiste. Salió ${giro}. -$250`;
+      }
+
+      localStorage.setItem("voltarisSaldo", saldo);
+      saldoElement.textContent = saldo;
+    }
+  </script>
+</body>
 </html>
