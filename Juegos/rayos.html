@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Rayos de Zeus</title>
   <style>
-    body { background: #000; color: white; text-align: center; padding: 40px; font-family: Arial; }
+    body { background: #000; color: white; text-align: center; padding: 40px; font-family: Arial }
     button { padding: 15px 30px; background: gold; font-size: 1.2em; border: none; border-radius: 10px; cursor: pointer; }
     .rayo { font-size: 4em; color: #0ff; margin: 20px 0; }
   </style>
@@ -18,18 +18,27 @@
 
   <script>
     let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
+    let carga = parseInt(localStorage.getItem("cargaTotal") || 10000);
+    let limite = carga * 0.3;
+    let gananciaUsuario = parseInt(localStorage.getItem("gananciaUsuario") || 0);
+
     document.getElementById("saldo").textContent = saldo;
 
     function invocar() {
       if (saldo < 200) return alert("Saldo insuficiente");
-      const suerte = Math.random();
-      if (suerte > 0.8) {
+
+      let gana = gananciaUsuario < limite ? Math.random() > 0.8 : Math.random() > 0.95;
+
+      if (gana) {
         saldo += 1500;
+        gananciaUsuario += 1500;
+        localStorage.setItem("gananciaUsuario", gananciaUsuario);
         document.getElementById("resultado").textContent = "¡Impacto de rayo! Ganaste $1500";
       } else {
         saldo -= 200;
-        document.getElementById("resultado").textContent = "¡Fallaste! Perdés $200";
+        document.getElementById("resultado").textContent = "¡Fallaste! Perdiste $200";
       }
+
       localStorage.setItem("voltarisSaldo", saldo);
       document.getElementById("saldo").textContent = saldo;
     }
