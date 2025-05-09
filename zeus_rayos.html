@@ -4,15 +4,17 @@
   <meta charset="UTF-8">
   <title>Rayos de Zeus</title>
   <style>
-    body { background: #000; color: white; text-align: center; padding: 40px; font-family: Arial }
-    button { padding: 15px 30px; background: gold; font-size: 1.2em; border: none; border-radius: 10px; cursor: pointer; }
-    .rayo { font-size: 4em; color: #0ff; margin: 20px 0; }
+    body { background: black; color: white; text-align: center; font-family: Arial; padding: 40px; }
+    h1 { color: gold; font-size: 2.2em; }
+    button { padding: 15px 25px; font-size: 1.2em; background: #0ff; border: none; border-radius: 10px; cursor: pointer; margin: 20px; }
+    .rayo { font-size: 5em; margin: 30px 0; color: gold; }
+    #resultado { font-size: 1.4em; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h1>Invocá los Rayos de Zeus</h1>
+  <h1>Rayos de Zeus</h1>
   <div class="rayo">⚡</div>
-  <button onclick="invocar()">Invocar Rayo ($200)</button>
+  <button onclick="invocarRayo()">Invocar Rayo ($300)</button>
   <p id="resultado"></p>
   <p>Saldo: $<span id="saldo">0</span></p>
 
@@ -24,22 +26,25 @@
 
     document.getElementById("saldo").textContent = saldo;
 
-    function invocar() {
-      if (saldo < 200) return alert("Saldo insuficiente");
+    function invocarRayo() {
+      if (saldo < 300) {
+        alert("Saldo insuficiente.");
+        return;
+      }
 
-      let gana = gananciaUsuario < limite ? Math.random() > 0.8 : Math.random() > 0.95;
+      let gana = gananciaUsuario < limite ? Math.random() > 0.4 : Math.random() > 0.95;
 
       if (gana) {
-        saldo += 1500;
-        gananciaUsuario += 1500;
-        localStorage.setItem("gananciaUsuario", gananciaUsuario);
-        document.getElementById("resultado").textContent = "¡Impacto de rayo! Ganaste $1500";
+        saldo += 1200;
+        gananciaUsuario += 1200;
+        document.getElementById("resultado").textContent = "¡Impacto divino! Ganaste $1200";
       } else {
-        saldo -= 200;
-        document.getElementById("resultado").textContent = "¡Fallaste! Perdiste $200";
+        saldo -= 300;
+        document.getElementById("resultado").textContent = "¡Zeus falló! Perdiste $300";
       }
 
       localStorage.setItem("voltarisSaldo", saldo);
+      localStorage.setItem("gananciaUsuario", gananciaUsuario);
       document.getElementById("saldo").textContent = saldo;
     }
   </script>
