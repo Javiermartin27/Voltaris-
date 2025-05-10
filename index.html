@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voltaris Casino</title>
   <link rel="icon" href="icon192.png">
+  <link rel="manifest" href="manifest.json">
   <style>
     body {
       margin: 0;
       font-family: 'Arial Black', sans-serif;
-      background: url('https://javiermartin27.github.io/Voltaris-/img/fondo-dragon.jpg') no-repeat center center fixed;
+      background: url('img/fondo-dragon.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
     }
@@ -73,7 +74,7 @@
 <body>
 
   <header>
-    <img src="https://javiermartin27.github.io/Voltaris-/img/logo-voltaris.png" alt="Voltaris Logo">
+    <img src="img/logo-voltaris.png" alt="Voltaris Logo">
     <h1>Voltaris Casino</h1>
   </header>
 
@@ -94,18 +95,20 @@
   </div>
 
   <script>
-    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
+    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 0);
     document.getElementById("saldo").textContent = saldo;
 
     function cargar() {
       const monto = prompt("¿Cuánto deseas cargar?");
-      if (monto && !isNaN(monto)) {
+      if (monto && !isNaN(monto) && parseInt(monto) > 0) {
         saldo += parseInt(monto);
         localStorage.setItem("voltarisSaldo", saldo);
         localStorage.setItem("cargaTotal", monto);
         localStorage.setItem("gananciaUsuario", 0);
         document.getElementById("saldo").textContent = saldo;
         window.open("https://biolibre.ar/urbanax?ref=voltaris", "_blank");
+      } else {
+        alert("Ingresá un monto válido para cargar.");
       }
     }
 
