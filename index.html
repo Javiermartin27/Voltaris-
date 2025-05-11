@@ -1,14 +1,12 @@
-import base64
-
-# Ruta local de la imagen (ajustala si es necesario)
-with open("voltaris-logo-dragon.png", "rb") as image_file:
-    encoded = base64.b64encode(image_file.read()).decode()
-
-# Generar código HTML para insertar la imagen directamente
-html_code = f'<img src="data:image/png;base64,{encoded}" alt="Voltaris Logo" style="width:200px;">'
-
-# Guardar en archivo o imprimir
-print(html_code)
+<style>
+  body {
+    margin: 0;
+    font-family: 'Arial Black', sans-serif;
+    background: url('img/fondo-dragon.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+  }
+</style>
 <!DOCTYPE html>
 <html lang="es">
 <head>
