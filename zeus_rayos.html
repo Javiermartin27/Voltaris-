@@ -7,82 +7,87 @@
     body {
       background: radial-gradient(#000, #111);
       color: white;
-      text-align: center;
       font-family: 'Arial Black', sans-serif;
+      text-align: center;
       padding: 40px;
     }
     h1 {
       color: gold;
       font-size: 2.5em;
-      text-shadow: 0 0 15px gold;
+      text-shadow: 0 0 10px gold;
     }
     .rayo {
       font-size: 6em;
+      animation: pulso 1s infinite;
       color: #FFD700;
-      animation: pulso 1.2s infinite;
+      margin: 20px;
     }
     @keyframes pulso {
-      0%, 100% { text-shadow: 0 0 20px #FFD700; transform: scale(1); }
-      50% { text-shadow: 0 0 40px #fff; transform: scale(1.2); }
+      0%, 100% { transform: scale(1); text-shadow: 0 0 20px #FFD700; }
+      50% { transform: scale(1.2); text-shadow: 0 0 40px white; }
     }
     button {
-      background: gold;
-      border: none;
-      color: black;
-      font-weight: bold;
       padding: 15px 30px;
+      background: gold;
+      color: black;
       font-size: 1.2em;
-      border-radius: 12px;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
-      box-shadow: 0 0 15px gold;
+      box-shadow: 0 0 10px gold;
+      font-weight: bold;
     }
     #resultado {
-      font-size: 1.3em;
-      margin-top: 25px;
-      font-weight: bold;
+      font-size: 1.4em;
+      margin-top: 20px;
     }
     #saldo {
       font-size: 1.5em;
       color: #0f0;
-      margin-top: 15px;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>Invocá los Rayos de Zeus</h1>
+
+  <h1>⚡ Rayos de Zeus</h1>
   <div class="rayo">⚡</div>
-  <button onclick="invocarRayo()">Invocar Rayo ($200)</button>
+  <button onclick="invocarRayo()">Invocar ($300)</button>
   <div id="resultado"></div>
-  <div>Saldo: $<span id="saldo">0</span></div>
+  <p>Saldo actual: $<span id="saldo">0</span></p>
 
   <script>
-    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 5000);
-    let carga = parseInt(localStorage.getItem("cargaTotal") || 10000);
-    let limite = carga * 0.3;
+    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 0);
+    let carga = parseInt(localStorage.getItem("cargaTotal") || 0);
     let gananciaUsuario = parseInt(localStorage.getItem("gananciaUsuario") || 0);
+    let limite = carga * 0.3;
+
     document.getElementById("saldo").textContent = saldo;
 
     function invocarRayo() {
-      if (saldo < 200) {
+      if (saldo < 300) {
         alert("Saldo insuficiente.");
         return;
       }
 
-      let gana = gananciaUsuario < limite ? Math.random() > 0.3 : Math.random() > 0.9;
+      let gana = gananciaUsuario < limite ? Math.random() > 0.3 : Math.random() > 0.95;
+      let resultado = "";
 
       if (gana) {
         saldo += 1200;
         gananciaUsuario += 1200;
-        document.getElementById("resultado").innerHTML = "<span style='color:#0f0;'>¡Impacto divino! Ganaste $1200</span>";
+        resultado = "¡Impacto divino! Ganaste $1200";
       } else {
-        saldo -= 200;
-        document.getElementById("resultado").innerHTML = "<span style='color:red;'>¡Fallaste! Perdiste $200</span>";
+        saldo -= 300;
+        resultado = "Zeus falló. Perdiste $300";
       }
 
       localStorage.setItem("voltarisSaldo", saldo);
       localStorage.setItem("gananciaUsuario", gananciaUsuario);
       document.getElementById("saldo").textContent = saldo;
+      document.getElementById("resultado").textContent = resultado;
     }
   </script>
+
 </body>
 </html>
