@@ -1,96 +1,130 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Rayos de Zeus</title>
+  <meta charset="UTF-8" />
+  <title>Zeus: Fortuna del Olimpo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: radial-gradient(#000, #111);
+      background: linear-gradient(#000, #111);
       color: white;
       font-family: 'Arial Black', sans-serif;
       text-align: center;
-      padding: 40px;
     }
-    h1 {
+
+    #pantallaCarga {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    #pantallaCarga h1 {
+      font-size: 2em;
       color: gold;
-      font-size: 2.5em;
-      text-shadow: 0 0 10px gold;
+      margin-bottom: 20px;
+      animation: parpadeo 1s infinite;
     }
-    .rayo {
-      font-size: 6em;
-      animation: pulso 1s infinite;
-      color: #FFD700;
-      margin: 20px;
+
+    @keyframes parpadeo {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
     }
-    @keyframes pulso {
-      0%, 100% { transform: scale(1); text-shadow: 0 0 20px #FFD700; }
-      50% { transform: scale(1.2); text-shadow: 0 0 40px white; }
+
+    .contenedor {
+      padding: 30px 10px;
     }
+
+    h2 {
+      color: gold;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+
+    .slot {
+      display: grid;
+      grid-template-columns: repeat(5, 80px);
+      grid-gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .simbolo {
+      width: 80px;
+      height: 80px;
+      background: #222;
+      border: 2px solid gold;
+      border-radius: 12px;
+      font-size: 2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     button {
-      padding: 15px 30px;
       background: gold;
       color: black;
       font-size: 1.2em;
       border: none;
+      padding: 12px 30px;
       border-radius: 10px;
       cursor: pointer;
-      box-shadow: 0 0 10px gold;
       font-weight: bold;
+      box-shadow: 0 0 15px gold;
+      margin: 10px;
     }
-    #resultado {
-      font-size: 1.4em;
-      margin-top: 20px;
-    }
+
     #saldo {
-      font-size: 1.5em;
       color: #0f0;
-      margin-top: 20px;
+      font-size: 1.3em;
+      margin-top: 10px;
+    }
+
+    #jackpot {
+      font-size: 2em;
+      color: gold;
+      margin-top: 15px;
+      display: none;
+      text-shadow: 0 0 10px gold, 0 0 20px white;
+      animation: brillo 1s infinite;
+    }
+
+    @keyframes brillo {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
     }
   </style>
 </head>
 <body>
 
-  <h1>⚡ Rayos de Zeus</h1>
-  <div class="rayo">⚡</div>
-  <button onclick="invocarRayo()">Invocar ($300)</button>
-  <div id="resultado"></div>
-  <p>Saldo actual: $<span id="saldo">0</span></p>
+  <div id="pantallaCarga">
+    <h1>Cargando Voltaris...</h1>
+    <p style="color:white;">Zeus prepara la suerte</p>
+  </div>
 
-  <script>
-    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 0);
-    let carga = parseInt(localStorage.getItem("cargaTotal") || 0);
-    let gananciaUsuario = parseInt(localStorage.getItem("gananciaUsuario") || 0);
-    let limite = carga * 0.3;
+  <div class="contenedor">
+    <h2>Zeus: Fortuna del Olimpo</h2>
 
-    document.getElementById("saldo").textContent = saldo;
+    <div class="slot" id="slot">
+      <div class="simbolo">❓</div>
+      <div class="simbolo">❓</div>
+      <div class="simbolo">❓</div>
+      <div class="simbolo">❓</div>
+      <div class="simbolo">❓</div>
+    </div>
 
-    function invocarRayo() {
-      if (saldo < 300) {
-        alert("Saldo insuficiente.");
-        return;
-      }
+    <button onclick="girar()">GIRAR ($500)</button>
+    <button onclick="cargar()">Cargar Saldo</button>
 
-      let gana = gananciaUsuario < limite ? Math.random() > 0.3 : Math.random() > 0.95;
-      let resultado = "";
-
-      if (gana) {
-        saldo += 1200;
-        gananciaUsuario += 1200;
-        resultado = "¡Impacto divino! Ganaste $1200";
-      } else {
-        saldo -= 300;
-        resultado = "Zeus falló. Perdiste $300";
-      }
-
-      localStorage.setItem("voltarisSaldo", saldo);
-      localStorage.setItem("gananciaUsuario", gananciaUsuario);
-      document.getElementById("saldo").textContent = saldo;
-      document.getElementById("resultado").textContent = resultado;
-    }
-  </script>
-
-</body>
-</html>
+    <p id="saldo">Saldo: $0</p>
+    <div id="jackpot">¡JACKPOT DIVINO!</div>
+  </div>
 <script>
     const simbolos = ["⚡", "💎", "👑", "🏛️", "🪙", "⚔️"];
     const rodillos = document.querySelectorAll(".simbolo");
