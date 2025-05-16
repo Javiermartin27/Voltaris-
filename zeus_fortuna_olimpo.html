@@ -216,3 +216,112 @@
   </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Voltaris Zeus Rayos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="voltaris_icon.png" />
+  <style>
+    body {
+      margin: 0;
+      background: url('fondo_voltaris.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      text-align: center;
+    }
+    .container {
+      padding: 60px 20px;
+    }
+    h1 {
+      font-size: 3em;
+      color: gold;
+      text-shadow: 2px 2px 8px black;
+    }
+    button {
+      background: gold;
+      color: black;
+      padding: 15px 30px;
+      font-size: 1.5em;
+      border: none;
+      border-radius: 10px;
+      margin-top: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 10px white;
+    }
+    .resultado {
+      margin-top: 40px;
+      font-size: 1.3em;
+    }
+    .saldo {
+      margin-top: 20px;
+      font-size: 1.5em;
+      color: #00ff00;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚡ Zeus Rayos</h1>
+    <button onclick="invocarRayo()">Invocar Rayo ($300)</button>
+    <div class="resultado" id="resultado"></div>
+    <div class="saldo">Saldo actual: $<span id="saldo">0</span></div>
+    <br><br>
+    <button onclick="cargarSaldo()">Cargar Saldo</button>
+    <button onclick="solicitarRetiro()">Retirar</button>
+  </div>
+
+  <script>
+    let saldo = parseInt(localStorage.getItem("voltarisSaldo")) || 0;
+    const saldoEl = document.getElementById("saldo");
+    const resultadoEl = document.getElementById("resultado");
+
+    function actualizarSaldo() {
+      saldoEl.textContent = saldo;
+      localStorage.setItem("voltarisSaldo", saldo);
+    }
+
+    function invocarRayo() {
+      if (saldo < 300) {
+        alert("Saldo insuficiente");
+        return;
+      }
+      saldo -= 300;
+
+      const exito = Math.random() < 0.3; // 30% chance ganar
+      if (exito) {
+        const premio = 1200;
+        saldo += premio;
+        resultadoEl.textContent = "¡Impacto divino! Ganaste $" + premio;
+      } else {
+        resultadoEl.textContent = "¡Fallaste! Perdiste $300";
+      }
+
+      actualizarSaldo();
+    }
+
+    function cargarSaldo() {
+      const monto = prompt("¿Cuánto querés cargar?");
+      if (monto && !isNaN(monto)) {
+        saldo += parseInt(monto);
+        actualizarSaldo();
+        alert("Redirigiendo a Mercado Pago...");
+        window.open("https://biolibre.ar/urbanax?ref=voltaris", "_blank");
+      }
+    }
+
+    function solicitarRetiro() {
+      if (saldo >= 10000) {
+        alert("Podés retirar: contactá al Cajero AI con tu ID de juego.");
+      } else {
+        alert("Necesitás $10.000 o más para retirar.");
+      }
+    }
+
+    actualizarSaldo();
+  </script>
+</body>
+</html>
