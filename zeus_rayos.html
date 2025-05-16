@@ -91,3 +91,94 @@
 
 </body>
 </html>
+<script>
+    const simbolos = ["⚡", "💎", "👑", "🏛️", "🪙", "⚔️"];
+    const rodillos = document.querySelectorAll(".simbolo");
+
+    let saldo = parseInt(localStorage.getItem("voltarisSaldo") || 0);
+    let carga = parseInt(localStorage.getItem("cargaTotal") || 0);
+    let gananciaUsuario = parseInt(localStorage.getItem("gananciaUsuario") || 0);
+    let limite = carga * 0.3;
+
+    document.getElementById("saldo").textContent = "Saldo: $" + saldo;
+
+    function girar() {
+      if (saldo < 500) {
+        alert("Saldo insuficiente. Cargá para seguir jugando.");
+        return;
+      }
+
+      saldo -= 500;
+      let resultado = [];
+
+      for (let i = 0; i < 5; i++) {
+        let simbolo = simbolos[Math.floor(Math.random() * simbolos.length)];
+        rodillos[i].textContent = simbolo;
+        resultado.push(simbolo);
+      }
+
+      let premio = 0;
+      const iguales = resultado.every(s => s === resultado[0]);
+
+      if (iguales) {
+        premio = 5000;
+        mostrarJackpot();
+        reproducirSonido("ganar");
+      } else if (resultado.filter(s => s === resultado[0]).length >= 3) {
+        premio = 1200;
+        reproducirSonido("ganar");
+      } else {
+        reproducirSonido("perder");
+      }
+
+      if (gananciaUsuario + premio > limite) {
+        premio = 0;
+      }
+
+      saldo += premio;
+      gananciaUsuario += premio;
+
+      localStorage.setItem("voltarisSaldo", saldo);
+      localStorage.setItem("gananciaUsuario", gananciaUsuario);
+      document.getElementById("saldo").textContent = "Saldo: $" + saldo;
+    }
+
+    function cargar() {
+      const monto = prompt("¿Cuánto querés cargar?");
+      if (monto && !isNaN(monto) && parseInt(monto) > 0) {
+        saldo += parseInt(monto);
+        carga = parseInt(monto);
+        gananciaUsuario = 0;
+        localStorage.setItem("voltarisSaldo", saldo);
+        localStorage.setItem("cargaTotal", monto);
+        localStorage.setItem("gananciaUsuario", 0);
+        document.getElementById("saldo").textContent = "Saldo: $" + saldo;
+        window.open("https://biolibre.ar/urbanax", "_blank");
+      }
+    }
+
+    function mostrarJackpot() {
+      const jackpot = document.getElementById("jackpot");
+      jackpot.style.display = "block";
+      setTimeout(() => jackpot.style.display = "none", 3000);
+    }
+
+    function reproducirSonido(tipo) {
+      const audio = new Audio();
+      if (tipo === "ganar") {
+        audio.src = "https://cdn.pixabay.com/download/audio/2022/03/15/audio_9f7e19be3f.mp3?filename=slot-machine-win-1-189527.mp3";
+      } else {
+        audio.src = "https://cdn.pixabay.com/download/audio/2022/03/15/audio_2cd0808c5a.mp3?filename=lose-1-189528.mp3";
+      }
+      audio.play();
+    }
+
+    // Simula pantalla de carga
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById("pantallaCarga").style.display = "none";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
